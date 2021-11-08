@@ -40,4 +40,34 @@ public class LinkedMatrix {
 			createColumn(i,j+1,current,rowPrev.getNext()); //Current se vuelve el anterior del siguiente
 		}
 	}
+	
+	public String toString() {
+		String message;
+		message = toStringRow(first);
+		return message;
+	}
+
+	private String toStringRow(Node firstRow) {
+		String message = "";
+		if(firstRow!=null) {
+			message = toStringCol(firstRow)+"\n";
+			message += toStringRow(firstRow.getDown());
+		}
+		return message;
+	}
+
+	private String toStringCol(Node current) {
+		String message = "";
+		if(current!=null) {
+			message = current.toString();
+			message += toStringCol(current.getNext());
+		}
+		return message;
+	}
+	
+	
+	public String toString2() {
+		String message = "";
+		return message;
+	}
 }
