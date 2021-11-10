@@ -3,8 +3,8 @@ package model;
 public class Player {
 	
 	private Player parent;
-    private Player right;
-    private Player left;
+    private Player next;
+    private Player prev;
     private Player postPlayer;
     private Player postPlayerInNode;
     private String nickname;
@@ -35,22 +35,22 @@ public class Player {
         this.parent = parent;
     }
 
-    public Player getRight() {
-        return this.right;
+    public Player getNext() {
+        return this.next;
     }
 
 
-    public void setRight(Player right) {
-        this.right = right;
+    public void setNext(Player right) {
+        this.next = right;
     }
 
-    public Player getLeft() {
-        return this.left;
+    public Player getPrev() {
+        return this.prev;
     }
 
 
-    public void setLeft(Player left) {
-        this.left = left;
+    public void setPrev(Player left) {
+        this.prev = left;
     }
 
 

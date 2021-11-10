@@ -1,5 +1,7 @@
 package model;
 
+import java.io.IOException;
+
 public class LinkedMatrix {
 	private Node first;
 	private int numberOfRows;
@@ -10,8 +12,6 @@ public class LinkedMatrix {
     private Player one;
     private Player root;
     private String message = "";
-    private int numRows;
-    private int numCols;
     private int amountSnakes;
     private int amountLadders;
     private int amountPlayers;
@@ -39,6 +39,102 @@ public class LinkedMatrix {
 
 	public void setNumberOfColumns(int numberOfColumns) {
 		this.numberOfColumns = numberOfColumns;
+	}
+	
+	public Node getFirst() {
+		return first;
+	}
+
+	public void setFirst(Node first) {
+		this.first = first;
+	}
+
+	public Node getFirstNode() {
+		return firstNode;
+	}
+
+	public void setFirstNode(Node firstNode) {
+		this.firstNode = firstNode;
+	}
+
+	public Player getActual() {
+		return actual;
+	}
+
+	public void setActual(Player actual) {
+		this.actual = actual;
+	}
+
+	public Player getOne() {
+		return one;
+	}
+
+	public void setOne(Player one) {
+		this.one = one;
+	}
+
+	public Player getRoot() {
+		return root;
+	}
+
+	public void setRoot(Player root) {
+		this.root = root;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public int getAmountSnakes() {
+		return amountSnakes;
+	}
+
+	public void setAmountSnakes(int amountSnakes) {
+		this.amountSnakes = amountSnakes;
+	}
+
+	public int getAmountLadders() {
+		return amountLadders;
+	}
+
+	public void setAmountLadders(int amountLadders) {
+		this.amountLadders = amountLadders;
+	}
+
+	public int getAmountPlayers() {
+		return amountPlayers;
+	}
+
+	public void setAmountPlayers(int amountPlayers) {
+		this.amountPlayers = amountPlayers;
+	}
+
+	public int getSizeMatrix() {
+		return sizeMatrix;
+	}
+
+	public void setSizeMatrix(int sizeMatrix) {
+		this.sizeMatrix = sizeMatrix;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+	}
+
+	public boolean isFinished() {
+		return finished;
+	}
+
+	public void setFinished(boolean finished) {
+		this.finished = finished;
 	}
 
 	private void createMatrix() {
@@ -182,7 +278,7 @@ public class LinkedMatrix {
 
 
     public Node searchNode(int id, Node current, Node firstRow) {
-        if (current.getId() == id && current.getStatusNode() == false) {
+        if (current.getId() == id && current.isStatusNode() == false) {
             return current;
         } else if (current.getNext() != null) {
             return searchNode(id, current.getNext(), firstRow);
@@ -213,7 +309,7 @@ public class LinkedMatrix {
 		int idEnd = (int) (Math.random() * (sizeMatrix) + 1);
 
 		if (control < ladders) {
-			if (idEnd != 1 && idHead - idEnd > numCols) {
+			if (idEnd != 1 && idHead - idEnd > numberOfColumns) {
 				Node nodeHead = searchNode(idHead, firstNode, firstNode);
 				Node nodeEnd = searchNode(idEnd, firstNode, firstNode);
 				Ladders newLadder = new Ladders(ladderName);
@@ -349,8 +445,6 @@ public class LinkedMatrix {
 		} else {
 			addWinner(root, player);
 		}
-		saveData();
-		loadData();
 	}
 
 	private void addWinner(Player current, Player newWinner) {
@@ -358,13 +452,13 @@ public class LinkedMatrix {
 			if (current.getPrev() == null) {
 				current.setPrev(newWinner);
 			} else {
-				addWinner(current.getLeft(), newWinner);
+				addWinner(current.getPrev(), newWinner);
 			}
 		} else {
-			if (current.getRight() == null) {
-				current.setRight(newWinner);
+			if (current.getNext() == null) {
+				current.setNext(newWinner);
 			} else {
-				addWinner(current.getRight(), newWinner);
+				addWinner(current.getNext(), newWinner);
 			}
 		}
 	}
@@ -381,10 +475,14 @@ public class LinkedMatrix {
 		if (player == null) {
 			return;
 		} else {
-			printWinners(player.getLeft());
+			printWinners(player.getPrev());
 			message += "      " + player.getNickname() + "                 " + player.getSymbol() + "                 "
 					+ player.toString() + "\n";
-			printWinners(player.getRight());
+			printWinners(player.getNext());
 		}
 	}
+	
+	
+	
+	
 }

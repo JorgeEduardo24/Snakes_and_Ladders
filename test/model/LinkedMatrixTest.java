@@ -32,17 +32,4 @@ class LinkedMatrixTest {
 		assertTrue(linkedMatrix.getNumberOfRows()==8);
 	}
 	
-	@Test
-	public void testCreateRow(int i, int j, Node currentFirstRow) {
-		
-	}
-	/*
-	@Test
-	public void testContactBook() {
-		setupScenary1();
-		ContactBook c = new ContactBook();
-		
-		assertTrue(c.getContacts().isEmpty());
-	}
-	*/
 }

@@ -43,6 +43,8 @@ public class Menu {
 			
 			linkedMatrix = new LinkedMatrix(numberOfRows, numberOfColumns);
 			System.out.println(linkedMatrix);
+			generateAutomatic(br, numberOfRows, numberOfColumns, snakes, ladders, players);
+            System.out.print("\n");
 			showMenu();
 			break;
 			
@@ -60,30 +62,30 @@ public class Menu {
 		}
 	}
 	
-	
-	public void generateAutomatic(int numberOfRows, int numberOfColumns, int snakes, int ladders, int players) {
+    // ---------------------------------------------AUTOMATIC-PLAYERS-----------------------------------------
+
+    public void generateAutomatic(BufferedReader br, int numberOfRows, int numberOfColumns, int snakes, int ladders, int players) throws NumberFormatException, IOException {
 		if (players > 7 && players < 0) {
 			System.err.println("Error. The game can have between 1 and 7 players");
 			showMenu();
 		} else {
 			System.out.println("\n");
 			System.out.println("Board successfully created !");
-			createWorldAutomatic(parts);
+			createWorldAutomatic(numberOfRows, numberOfColumns);
 		}
-		assignAutomatic(Integer.parseInt(parts[4]), 0);
-		System.out.println(world);
-		initializeGame(false);
+		assignAutomatic(players, 0);
+		System.out.println(linkedMatrix);
 	}
-	
-	
-	public void assignAutomatic(int players, int counter) {
+
+
+    public void assignAutomatic(int players, int counter) {
 		if (counter < players) {
-			world.addPlayer(genrateSymbol(counter++));
+			linkedMatrix.addPlayer(genrateSymbol(counter++));
 			assignAutomatic(players, (counter++));
 		}
 	}
-	
-	public char genrateSymbol(int option) {
+    
+    public char genrateSymbol(int option) {
         char symbol = ' ';
         switch (option) {
             case 1:
@@ -116,6 +118,56 @@ public class Menu {
         }
         return symbol;
     }
-	
+
+   
+    public void createWorldAutomatic(int numberOfRows, int numberOfColumns) {
+    	linkedMatrix = new LinkedMatrix(numberOfRows, numberOfColumns);
+    }
+
+    // ----------------------------------GAME-SIMULATION-------------------------------------------------------
+
+    public void gameSimulation(BufferedReader br) throws IOException {
+        if (!linkedMatrix.isFinished()) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println(linkedMatrix.generateDice());
+            System.out.println(linkedMatrix);
+            gameSimulation(br);
+
+        } else {
+            showWinner(br);
+        }
+    }
+
+    // -------------------------------------------------WINNERS---------------------------------------------------
+
+    public void showWinner(BufferedReader br) throws IOException {
+        System.out.println("\033[032m¡EL JUGADOR " + linkedMatrix.getActual().getSymbol() + " HA GANADO CON UN TOTAL DE "
+                + linkedMatrix.getActual().getMoves() + " MOVIMIENTOS!" + "\033[0m");
+        calculateWinner(br);
+    }
+
+
+    public void calculateWinner(BufferedReader br) throws IOException {
+        System.out.print("Por favor ingrese su nickname: ");
+        String nickname = br.readLine();
+        System.out.print("\n");
+        if (nickname.equals("")) {
+            System.err.println("Su nickname no puede estar vacio, por favor, vuelva a intentarlo!\n");
+            calculateWinner(br);
+        } else {
+            linkedMatrix.getActual().setNickname(nickname);
+            try {
+            	linkedMatrix.addWinner(linkedMatrix.getActual());
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 	
 }
